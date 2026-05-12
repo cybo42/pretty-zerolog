@@ -6,6 +6,12 @@ program or pass one or more JSONL files as arguments.
 
 ## Installation
 
+### Homebrew
+
+```sh
+brew install cybo42/tap/pretty-zerolog
+```
+
 ### Go install
 
 ```sh
