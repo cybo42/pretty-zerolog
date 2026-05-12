@@ -1,0 +1,60 @@
+version: 2
+project_name: pretty-zerolog
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: pretty-zerolog
+    main: ./
+    binary: pretty-zerolog
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "Merge pull request"
+      - "Merge branch"
+
+homebrew_casks:
+  - name: pretty-zerolog
+    binaries: [pretty-zerolog]
+    repository:
+      owner: cybo42
+      name: homebrew-tap
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    homepage: "https://github.com/cybo42/pretty-zerolog"
+    description: "Pretty-print zerolog JSON output"
+    license: MIT
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/pretty-zerolog"]
+          end
