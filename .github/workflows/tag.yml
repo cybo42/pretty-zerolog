@@ -1,0 +1,43 @@
+name: Tag Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g. v1.2.3)'
+        required: true
+      commit_sha:
+        description: 'Commit SHA to tag (defaults to main branch HEAD)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.commit_sha || 'main' }}
+
+      - name: Resolve commit SHA
+        id: resolve
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "${{ inputs.version }}" "${{ steps.resolve.outputs.sha }}"
+          git push origin "${{ inputs.version }}"
+
+  release:
+    needs: tag
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+    secrets:
+      HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
