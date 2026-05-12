@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go version *)",
+      "Bash(mise --version)",
+      "WebFetch(domain:goreleaser.com)",
+      "Bash(go build *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(goreleaser --version)",
+      "Bash(command -v goreleaser)",
+      "Bash(make snapshot *)"
+    ]
+  }
+}
