@@ -1,0 +1,4 @@
+/dist/
+/pretty-zerolog
+*.log
+.DS_Store
