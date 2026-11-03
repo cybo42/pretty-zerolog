@@ -1,6 +1,6 @@
 module github.com/cybo42/pretty-zerolog
 
-go 1.23.2
+go 1.23.12
 
 require github.com/rs/zerolog v1.33.0
 
