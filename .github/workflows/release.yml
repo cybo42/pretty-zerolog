@@ -1,8 +1,6 @@
 name: release
 
 on:
-  push:
-    tags: ["v*"]
   workflow_call:
     secrets:
       HOMEBREW_TAP_GITHUB_TOKEN:
