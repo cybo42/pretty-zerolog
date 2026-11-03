@@ -41,6 +41,9 @@ changelog:
       - "Merge pull request"
       - "Merge branch"
 
+release:
+  replace_existing_artifacts: true
+
 homebrew_casks:
   - name: pretty-zerolog
     binaries: [pretty-zerolog]
