@@ -52,7 +52,15 @@ func main() {
 		"Time format, either 'default' or 'full'",
 	)
 
+	versionFlag := flag.Bool("version", false, "Print version and exit")
+	flag.BoolVar(versionFlag, "v", false, "Print version and exit")
+
 	flag.Parse()
+
+	if *versionFlag {
+		fmt.Printf("pretty-zerolog %s (commit %s, built %s)\n", version, commit, date)
+		return
+	}
 
 	timeFormat, ok := timeFormats[*timeFormatFlag]
 	if !ok {
